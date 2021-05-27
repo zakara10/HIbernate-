@@ -1,0 +1,136 @@
+Day5    
+------
+2 ways to provide metadata
+A)XML Approach [Hibernate version 3]
+-POJO/Entity class
+-Client code
+-hibernate.cfg.xml [db configurations]
+-pojo.hbm.xml [class-table mapping inf/table structure]
+
+B)Annotation Approach [Hibernate version4 onwards]
+-POJO/Entity class with annotations[replace hbm file]
+-Client code
+-hibernate.cfg.xml [db configurations]
+_________________________________________________________
+
+****Annotations
+-starts with @symbol
+
+-used to associate metadata about some programming element like class,method,variable,interface
+eg:-@Override
+
+-used to hold metadata along with the java code & so must be used for fixed stuff
+
+-Annotations are inside the java code [not external like xml] & so if changed java code needs to rebuild
+
+**use
+DB COnfigurations will keep on changing -[hibernate.cfg.xml]
+Table structure remain same-[use annotation]
+
+_________________________________________________________
+Basic Annotations
+@Entity--->marks a class as a Entity/POJO class
+@Table-->specific table name
+@Id--->specific PK column
+@Column--->specify non PK columns
+
+___________________________________________________
+steps for Hibernate-Annotation Application
+1)open eclipse
+2)create java project & add hibernate+db jar files
+
+3)create pojo class[com.hibernate.model] with annotations
+	@Entity,@Table,@Id,@Column
+
+4)mapping in hibernate.cfg.xml	last line 
+	<mapping class="pojo class name" />
+
+5)create client class[com.hibernate.client]
+_________________________________________________________
+
+
+Lab1)Hibernate with Annotations
+create Customer class-->
+custId,custName,contactNo,birthDate
+
+create a console-based clients & use  Scanner to accept input
+client1--->save 3 records
+client2---> load
+client3--->update
+client4--->delete
+**use Utility class to obtain SessionFactory
+
+_________________________________________________________
+
+How to map has a kind of class relationship (Containment)
+-------------------------------------------------------
+Ex:-
+Book-->code,title,price,
+	MyDate publDate,
+	Address publAddress
+MyDate-->day,month,year
+Address-->city,state,country,pin
+
+****Component Mapping
+---------------------
+How to map has a kind of Class relationship[Containment]
+when a class member is an object of some class.
+
+@Entity @Table
+class Employee{
+	@Id,@Column
+	empid
+	
+	@Column
+	empname,empsal,jdate;
+	
+	@Embedded
+	Address resAddress;
+}
+@Embeddable
+class Address{
+	@Column
+	street,city,country,pincode;
+}
+//Here do not create  a seperate table for class Address
+
+-Here we use 2 annotations
+@Embedded specifies not to create a new table for that property
+
+@Embeddable applied to some class which wud be embedded in other class
+
+_________________________________________________________
+Lab2) Component Mapping
+Profile [Main POJO]
+--------
+int profileId
+Date creationDate
+PersonalDetails perInfo
+EducationalDetails eduInfo
+
+PersonalDetails
+----------------
+String firstName,lastName,email,contactNo,gender
+Date birthDate
+Address resAddr
+
+Address   
+-------
+String street,city,country,zip
+
+EducationalDetails
+------------------
+String qualification,result
+int yearPassing
+
+create a different clients for above assignment with following facilities
+client1-Add 2 Profiles
+client2-Search a Profile based on profile Id(userInput)
+
+client3(swing)-->frame having
+txtbox1-->user enter profile Id
+show button(bottom)-->click--->
+	print profile inf in next textboxes
+clear button-->click-->clear the contents of all txtboxes
+**use utility class to obtain sessionfactory
+__________________________________________________

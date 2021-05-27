@@ -1,0 +1,177 @@
+Day8	
+------- 
+up till now we have retrieved data based on only pk/POJO identity (single record)
+Employee emp=session.get(Employee.class,eid);
+
+what if we want to retrive bulk data(multiple records/based on any criteria)
+eg:-
+all emps sal between 5000 to 50000
+all emp belonging to departmnt 'Purchase'
+all students whose percentage is below 80
+
+---------------------------------------------------------------
+SQL-Structured Query Language
+it is a language used to access any db
+it works on tables & columns
+eg:-select * from emp;
+
+HQL-Hibernate Query Language
+it is a language used to access POJO's
+it works on POJO & properties
+eg:-from Employee e;
+_______________________________________________________
+
+various ways to retrive data
+----------------------------
+1)using get/load method we can retrieve only single record
+-----------------------------------------------------
+Employee emp=session.get(Employee.class,POJO identity);
+
+what if we want to retrieve bulk data[more than one records]
+eg:-all emps whose salary > 5000
+    all emps who belong to 'Sales' department
+
+solution:-HQL [Hibernate Query Language]
+
+2)HQL we can retrieve bulk data/multiple records
+  -----------------------------------------------
+	Query q=session.createQuery("from Employee e");
+	List<Employee> lst=q.list();  
+//HQL-->SQL-->fire on db--->return multiple records in  a list
+	
+	Iterator<Employee> itr=lst.iterator();
+	while(itr.hasNext()){
+		Employee emp=itr.next();
+		System.out.print(emp);
+	}
+_______________________________________________________
+HQL[Hibernate Query Language]
+------------------------------
+HQL is HIbernate's own query language
+
+also known as object oriented form of SQL queries
+
+it works on POJO & properties
+
+we can easily translate SQL into HQL by replacing
+Table name---->POJO class name
+db column name--->POJO property/variable names
+
+At runtime hibernate will convert HQL---->SQL acc to the db
+______________________________________________________
+dbside
+	emp--->eid,ename,esal
+javaside
+	Employee--->empId,empName,empSal
+
+SQL----> select * from emp;
+HQL----> from Employee e;  here e is a alias
+
+SQL----> select * from emp where esal>5000;
+HQL----> from Employee e where e.empSal>5000;
+
+SQL--->select * from emp where esal between 5000 and 50000
+HQL--->from Employee e where e.empSal between 5000 and 50000
+
+SQL-->select * from emp order by esal desc
+HQL-->from Employee e order by e.empSal desc
+__________________________________________________________
+  
+Using HQL we can divide select operations in 2 types
+1)Reading Complete Entity/All columns(*) using from clause
+--------------------------------------------------------
+In From clause ,the entire row is wrapped into an Employee object which is then added to the List.
+Here each List element is an Employee object.
+eg:-
+
+SQL- select * from emp
+HQL- from Employee e    [here e is a alias]
+
+SQL- select * from emp where sal>5000
+HQL- from Employee e  where e.salary >5000
+
+Query q=session.createQuery(“from Employee e”);
+List<Employee> lst=q.list();
+Iterator<Employee> itr=lst.iterator();
+while(itr.hasNext()){
+	Employee emp=itr.next();
+	System.out.print(emp);
+}
+__________________________________________________________
+
+2)Reading Partial Entity/specific columns using select clause
+----------------------------------------------------------
+In Select clause ,the individual column is wrapped into an object which is then added to the List.
+Here each List element is an array of objects[Object[]]
+dbside
+	emp--->eid,ename,esal
+javaside
+	Employee--->empId,empName,empSal
+eg:-
+SQL- select eid,ename from emp
+HQL- select e.empId,e.empName from Employee e  
+
+SQL- select eid,sal from emp where sal>5000
+HQL-select e.empId,e.empSal from Employee e where e.empSal >5000
+
+SQL- select count(*),min(sal),max(sal) from emp
+HQL-select count(*),min(e.empSal),max(e.empSal)from Employee e
+
+
+
+Query q=session.createQuery(“select e.id,e.salary from Employee e”);
+List lst=q.list();
+Iterator itr=lst.iterator();
+while(itr.hasNext()){
+	Object[] obj=(Object[])itr.next();
+	System.out.print(“Id=”+obj[0]);
+	System.out.print(“Salary=”+obj[1]);
+}
+
+__________________________________________________________
+
+//runtime Parameter binding using positional parameters start from zero
+Query q=session.createQuery("from Book b where b.price between ? and ?");
+			q.setParameter(0, min);
+			q.setParameter(1, max);
+			
+//runtime Parameter binding using named parameters using colon :
+Query q=session.createQuery("from Book b where b.price between :p1 and :p2");
+			q.setParameter("p1", min);
+			q.setParameter("p2", max);
+________________________________________________________
+Lab)
+Gift(POJO)---->giftId(autogenerate),giftName,category,price
+category eg:-Electronics,Toys,Accessories,HealthCare,etc
+
+client-1)save 10 records
+
+***using from clause
+client-2)print all gifts 
+client-3)all gifts belonging to some category
+		[input category]
+		[use positional parameter]
+client-4)print gifts in a particular range
+		[input minAmt & maxAmt]
+		[use named parameter]
+
+**using select clause
+client-5)print giftname & price 
+client-6)print cheapest & most expensive price & total no of gifts
+client-7)print giftname & price in a particular range
+		[input minAmt & maxAmt]
+		[use positional parameter]
+
+client-8)create a swing frame having 
+2textboxes-min & max price 
+1button-show
+JTable
+on click of show button display gift inf in a JTable
+
+client-9)create a swing frame having 
+dropdown holding category names fetched frm db
+1button-show
+JTable
+on click of show button display gift inf in a JTable belonging to that category selected frm dropdown
+
+_________________________________________________________

@@ -1,0 +1,64 @@
+Day11   
+-----
+object states in hibernate
+--------------------------
+Employee e=new Employee(101,"John",78900);//transient object(in 							memory)		
+session.save(e);   //persistent object
+
+website-->webpages(static/dynamic)
+To create dynamic webpage--->servlet/JSP
+
+JSP Basic Tags--->
+<%jdbc code%> scriplet
+<%=rs.getString("productcode")%> expression
+<%@page import=""%>
+<%@include file="title.jsp"%>
+
+Code Activity:-	write JSP code to print current date 
+import java.util.Date;
+Date d=new Date();
+System.out.println(d);
+
+<%@page import="java.util.Date"%>
+<%Date d=new Date();%>
+<%=d%>
+
+
+**Hibernate JSP Integration
+-----------------------------
+1)open eclipse---->select JavaEE perspective RHS
+2)Configure the Tomcat server--->start it
+3)Create a new Dynamic Web Project -->***WebModuleVersion=3.0
+(bcz we are providing the configuration using Annotations)
+
+4)paste the jar files in WEB-INF--->lib folder
+5)create the POJO class in src folder [com.hibernate.model]
+6)paste the hibernate.cfg.xml & its dtd in src folder
+
+7)create JSP pages in WebContent folder
+8)Run on server
+
+we use
+scriplet  <% Java Code %>
+Page Directive <%@page import="packages" %>
+expression <%=Java variable %>
+__________________________________________________________
+Lab:-
+create a webapp-GiftWebApp
+index.jsp--->3 hyperlinks   eg:-<a href="target">label</a>
+	Get gifts by Price----click---->enter1.jsp
+	Get gifts by Category----click---->enter2.jsp
+	Add a new Gift---click---->enter3.jsp
+
+enter1.jsp--form--->min amt,max amt,submit-->show1.jsp
+show1.jsp--->show all gifts in a particular range [Criteria API]
+
+enter2.jsp--->dropdown holding gift categories fetched frm 		db,submit--->show2.jsp[HQL select clause]
+show2.jsp--->show all gifts belonging to that category [HQL from clause]
+
+enter3.jsp--->form,textboxes for giftId,giftName,price,category(dropdwn) and submit--->save.jsp
+save.jsp---->fetch the gift inf & save it in db [session.save]
+______________________________________________________________
+
+
+

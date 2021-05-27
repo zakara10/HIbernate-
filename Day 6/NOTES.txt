@@ -1,0 +1,67 @@
+	Day 6
+------
+Book-->code,title,author,price,publicationAddr(Address)
+Address-->city,state,country
+
+Hibernate Inheritance Mapping
+-----------------------------
+-Inheritance is the property by the virtue of which one object acquires features of other
+
+Eg:-
+//super class
+class Player{playerId,playerName,country,numMatches}
+
+//sub class1
+class Batsman extends Player{numRuns}
+
+//sub class2
+class Bowler extends Player{numWickets}
+
+-To implement inheritance mapping in hibernate there are 3 ways
+1)Table per Hierarchy
+2)Table per concrete class
+3)Table per subclass
+
+In each strategy,table structure will change
+
+1)Table per Hierarchy
+----------------------
+-Entire class hierarchy is mapped to a single table
+
+-An extra column [known as discriminator column] is added to the table to identify the type of record
+
+-It will hold discriminator value which is different for each subclass
+
+-Annotations used
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="empType", discriminatorType=DiscriminatorType.STRING,
+					 length = 20)
+@DiscriminatorValue( value = "temp")
+
+Here 
+Total no of columns=summation of columns of super & subclasses + 1 extra column [discriminator column]
+
+_________________________________________________________________
+Lab)
+Address
+-------
+String street,city,country,zip
+	Player
+	-------
+	int playerId
+	String playerName
+	int numMatches
+	Address resAddr
+			2 subclasses 
+			Batsman
+			-------
+			numRuns
+
+			Bowler
+			-------
+			numWickets
+write 2 clients
+client1--->save 2 batsman & 2 bowler objects 
+client2--->accept playerId & print player details
+**use Utility class to obtain sessionfactory
+________________________________________________________

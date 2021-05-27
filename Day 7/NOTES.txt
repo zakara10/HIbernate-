@@ -1,0 +1,54 @@
+Day7   
+------ 
+Inheritance Mapping continued
+1)Table per class hierarchy we already learnt in previous session
+Limitation:-
+we cannot apply not null constraints on the table
+
+2)Table per concrete class
+----------------------------
+-A seperate table is created for each class
+-subclass table has super class columns +its own columns
+
+Limitation:-
+super class columns repeat in the sub class table
+hence duplicate columns
+-Annotations used
+@MappedSuperClass instead of @Entity for the superclass
+	@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)	
+	@AttributeOverrides
+This annotation allows the super class column names to be changed in subclass table
+________________________________________________________
+
+
+3)Table per subclass
+-----------------------
+-There is a seperate super class table having supr class columns
+-subclass tables are related with the super class table using foreign key[specified by @PrimaryKeyJoinColumn applied in the subclass]
+-Annotations used
+	@Inheritance(strategy=InheritanceType.JOINED)
+	@PrimaryKeyJoinColumn
+____________________________________________________
+Lab1)solve player assignment using strategy2 for practice
+
+Lab2)table per subclass
+Address
+-------
+String street,city,state,country,zip
+
+Student
+-------
+int rollno
+String studentName
+Date admissionDate
+Address perAddr
+		2 subclasses
+		PrimaryStudent
+		--------------
+		String grade
+
+		SecondaryStudent
+		--------------
+		float percentage 
+
+________________________________________________

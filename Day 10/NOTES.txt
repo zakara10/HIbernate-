@@ -1,0 +1,57 @@
+Day10   
+-----
+
+@GeneratedValue 
+indicates hibernate to auto generate value for dept_id [1,2,3...]
+
+One To Many Association
+-----------------------
+Annotations used 
+@OneToMany
+@ManyToOne
+@JoinColumn
+
+____________________________________________________
+Lab1)Director directs movies [One To Many Association]
+Director
+--------
+directorId
+directorName
+Set<Movie> movies
+
+Movie
+-----
+movieId        (movieId must be auto generated)
+movieName
+releaseDate
+budget
+Director dir
+
+client1--->save inf of 2 directors.Each director directs 3 movies
+client2--->accept directorId from user & print all the movie inf
+client3--->add a new movie for an existing/precreated director(userinput)
+
+__________________________________________________________
+Many To Many Association
+------------------------
+2 tables for the POJOs & one joining table 
+Lab2)
+Employee
+---------
+empId
+empName
+jdate
+Set<Meeting> meetings
+
+Meeting
+-------
+meetingId   [auto generate meeting id]
+agenda
+meetingDate
+meetingTime
+Set<Employee> employees
+
+client1--->save inf of 3 emps each attending 2 meetings.
+client2--->accept empid from user & print all meetings he/she attended
+client3--->accept meetingid & print its info & employee names who attended it
+_______________________________________________________

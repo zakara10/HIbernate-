@@ -1,0 +1,106 @@
+Day9   
+-----
+To retrive bulk data/multiple records there are 3 ways
+1)HQL
+	Query q=session.createQuery("HQL Query");
+eg:-	Query q=session.createQuery("from Employee e");
+	List<Employee> lst=q.list();
+
+2)Native SQL
+	Query q=session.createSQLQuery("SQL Query");
+eg:- Query q=session.createSQLQuery("select * from hib_emp");
+     List<Employee> lst=q.list();
+
+3)Hibernate Criteria API [QBC-Query By Criteria] alternative to HQL		
+------------------------
+	Criteria c=session.createCriteria(Employee.class);
+//Projection is used to read partial entity/specific columns
+	Projection prj=Projections.property("salary");
+	c.setProjection(prj);
+	or
+//for multiple columns
+	ProjectionList plist = Projections.projectionList();
+	plist.add(Projections.property("empname"));
+	plist.add(Projections.property("salary"));
+	c.setProjection(plist);	
+
+//Restriction is used to apply some condition
+	c.add(Restrictions.eq("salary",5000));
+	c.add(Restrictions.between("price",1000.00,2000.00));
+	List lst=c.list();
+
+//more inf
+c.add(Restrictions.eq("city","Pune")); city='Pune'
+c.add(Restrictions.like("city","P%")); city like 'P%'
+
+Activity/Lab1:-
+--------------
+Customer:-custId,firstName,lastName,annualSal,city
+--------
+List of all customers(firstName,lastName,annualSal) in city "Pune" whose annual salary is in the range 250000 to 750000??
+_________________________________________________________________
+Association
+-----------
+relation between 2 seperate/different Entities.
+Here we can navigate from one entity to another in both direction
+
+Mapping Associations in Hibernate
+----------------------------------
+4 types of Associations
+1)One-To-One Association
+2)One-To-Many Association
+3)Many-To-One Association
+4)Many-To-Many Association
+
+1)One-To-One Association
+--------------------------
+@PrimaryKeyJoinColumn
+used when primary key & foreign key both are the same column
+
+@JoinColumn
+used when primary key is seperate & foreign key is a seperate column
+_______________________________________________________
+
+Lab1)One to one association
+Institute
+---------
+int instituteId
+String instituteName
+InstituteHistory history  
+
+InstituteHistory
+------------------
+int instituteId
+String founder
+Date foundationDate
+Address hoAddress    
+Institute inst        
+
+Address
+--------
+street,city,state,country,pinCode
+
+____________________________________________________
+Lab2)One to one association
+Address
+--------
+street,city,state,country,pinCode
+	Customer
+	--------
+	custId
+	custName
+	contactNum
+	Address custAddress
+	Passportdetails passDetails;
+
+	Passportdetails
+	-----------------
+	passportNo
+	firstName,middleName,lastName
+	dob,gender
+	nationality,countryCode
+	expiryDate,issueDate
+	birthPlace
+	Customer cust;
+
+____________________________________________________
